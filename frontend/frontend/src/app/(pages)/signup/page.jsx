@@ -1,8 +1,11 @@
+"use client"
 import React from "react";
 import Image from "next/image";
 import "../../components/style.css";
+import { useRouter } from "next/navigation";
 
 export default function page() {
+  const router =  useRouter();
   return (
     <div className="signup-container">
       <div className="glowingg-effect"></div>
@@ -51,7 +54,7 @@ export default function page() {
             className="signup-input"
           />
 
-          <button type="submit" className="signup-btn">
+          <button type="submit" className="signup-btn" onClick={() => { router.push("/")}}>
             Sign Up
           </button>
         </form>

@@ -31,7 +31,7 @@ export default function Home() {
 
         <p className="p">Want to Explore more?</p>
         <h1 className="h">
-          Let's <span className="start">Start!!</span>
+          {/* Let's */} <span className="start">Start!!</span>
         </h1>
         <div className="button">
           <button className="signupp-btn">
