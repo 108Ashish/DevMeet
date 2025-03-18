@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  username  String    @unique
+  password  String
+  bio       String
+  firstName String
+  lastName  String
+  Type      String
+  City      String
+  College   String
+  Country   String
+  Tech      Tech[]
+  posts     Post[]
+  likes     Like[]
+  comments  Comment[]
+  followers Follows[] @relation("FollowersRelation")
+  following Follows[] @relation("FollowingRelation")
+}
+
+model Post {
+  id             String      @id @default(cuid())
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  title          String
+  description    String
+  Type           String
+  pictures       String
+  userId         String
+  user           User        @relation(fields: [userId], references: [id])
+  likes          Like[]
+  comments       Comment[]
+  originalPost   Post?       @relation("RepostRelation", fields: [originalPostId], references: [id])
+  originalPostId String? // For reposts, references the original post
+  repostedPosts  Post[]      @relation("RepostRelation")
+}
+model Comment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+model Like {
+  id     String @id @default(cuid())
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+model Follows {
+  id          String @id @default(cuid())
+  followerId  String
+  follower    User   @relation("FollowersRelation", fields: [followerId], references: [id])
+  followingId String
+  following   User   @relation("FollowingRelation", fields: [followingId], references: [id])
+}
+model Tech {
+  id    String @id @default(cuid())
+  name  String
+  User  User[]
+}
