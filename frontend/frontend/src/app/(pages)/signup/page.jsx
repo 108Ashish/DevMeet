@@ -22,13 +22,13 @@ export default function page() {
       <div className="signup-box">
         <h1 className="signup-title">Join Us! Create Your Account</h1>
         <form className="signup-form">
-          <label htmlFor="name">Full Name</label>
+          {/* <label htmlFor="name">Full Name</label>
           <input
             type="text"
             id="name"
             placeholder="Enter your full name"
             className="signup-input"
-          />
+          /> */}
 
           <label htmlFor="email">Email</label>
           <input
