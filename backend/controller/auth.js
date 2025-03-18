@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 export const register = async (req, res) => {
     try {
-        const { email, username, password, firstName, lastName, userType } = req.body;
+        const { email, username, password, firstName, lastName, college, country, tech, bio} = req.body;
 
         const existingUser = await pclient.user.findFirst({
             where: { OR: [{ email }, { username }] }
@@ -23,12 +23,17 @@ export const register = async (req, res) => {
 
         const user = await pclient.user.create({
             data: {
-                email,
-                username,
+                email:email,
+                username: username,
                 password: hashedPassword,
-                firstName,
-                lastName,
-                Type: userType, // no type casting needed in JS
+                firstName: firstName,
+                lastName: lastName,
+                college: college,
+                country: country,
+                tech: tech,
+                bio: bio,
+
+    
             }
         });
 
@@ -41,10 +46,10 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
 
         const user = await pclient.user.findUnique({
-            where: { email }
+            where: { username }
         });
 
         if (!user) {
