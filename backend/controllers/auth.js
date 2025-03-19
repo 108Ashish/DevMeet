@@ -1,15 +1,17 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import pclient from "../db/client.js";
-import dotenv from "dotenv";
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const { PrismaClient } = require('@prisma/client');
+
+const pclient = new PrismaClient();
 
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export const register = async (req, res) => {
+const register = async (req, res) => {
     try {
-        const { email, username, password, firstName, lastName, college, country, tech, bio} = req.body;
+        const { email, username, password, firstName, lastName, college, country, bio, City} = req.body;
 
         const existingUser = await pclient.user.findFirst({
             where: { OR: [{ email }, { username }] }
@@ -28,12 +30,10 @@ export const register = async (req, res) => {
                 password: hashedPassword,
                 firstName: firstName,
                 lastName: lastName,
-                college: college,
-                country: country,
-                tech: tech,
+                Country: country,
                 bio: bio,
-
-    
+                City: City,
+                College: college,
             }
         });
 
@@ -44,7 +44,7 @@ export const register = async (req, res) => {
     }
 };
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -71,3 +71,6 @@ export const login = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+
+module.exports = { register, login };

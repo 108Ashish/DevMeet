@@ -13,7 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
   id        String    @id @default(cuid())
   email     String    @unique
@@ -22,7 +21,6 @@ model User {
   bio       String
   firstName String
   lastName  String
-  Type      String
   City      String
   College   String
   Country   String
@@ -35,21 +33,18 @@ model User {
 }
 
 model Post {
-  id             String      @id @default(cuid())
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  title          String
-  description    String
-  Type           String
-  pictures       String
-  userId         String
-  user           User        @relation(fields: [userId], references: [id])
-  likes          Like[]
-  comments       Comment[]
-  originalPost   Post?       @relation("RepostRelation", fields: [originalPostId], references: [id])
-  originalPostId String? // For reposts, references the original post
-  repostedPosts  Post[]      @relation("RepostRelation")
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  title       String
+  description String
+  pictures    String
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  likes       Like[]
+  comments    Comment[]
 }
+
 model Comment {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -60,6 +55,7 @@ model Comment {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
+
 model Like {
   id     String @id @default(cuid())
   postId String
@@ -67,6 +63,7 @@ model Like {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 }
+
 model Follows {
   id          String @id @default(cuid())
   followerId  String
@@ -74,8 +71,9 @@ model Follows {
   followingId String
   following   User   @relation("FollowingRelation", fields: [followingId], references: [id])
 }
+
 model Tech {
-  id    String @id @default(cuid())
-  name  String
-  User  User[]
+  id   String @id @default(cuid())
+  name String
+  User User[]
 }

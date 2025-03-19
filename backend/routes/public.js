@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import * as postController from "../controllers/posts"
+const { Router } = require('express');
+const postController = require("../controllers/post.js")
 
 const router = Router();
 
@@ -13,4 +13,4 @@ router.post('/getUserFollowing', postController.getUserFollowing)
 
 
 
-export default router;
+module.exports = router;
