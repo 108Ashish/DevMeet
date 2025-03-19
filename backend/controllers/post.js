@@ -76,6 +76,30 @@ const getLikesOfPosts = async (req, res) => {
     }
 };
 
+const getRestaurantStartingWith = async (req, res) => {
+    try {
+        const { restaurant } = req.body;
+
+        const restaurants = await pclient.user.findMany({
+            where: {
+                username: { startsWith: restaurant },
+                Type: 'BUSINESS',
+                Restaurant: { isNot: null },
+            },
+            select: {
+                id: true,
+                username: true,
+                firstName: true,
+                lastName: true,
+                avatar: true,
+            }
+        });
+
+        res.status(200).json(restaurants);
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
 
 // Search for users starting with a username
 const getUsersStartingWith = async (req, res) => {
@@ -100,7 +124,36 @@ const getUsersStartingWith = async (req, res) => {
     }
 };
 
+// Get user profile summary
+const getUserProfileSummary = async (req, res) => {
+    try {
+        const { userId } = req.body;
 
+        const profileData = await pclient.user.findUnique({
+            where: { id: userId },
+            select: {
+                id: true,
+                username: true,
+                firstName: true,
+                lastName: true,
+                Type: true,
+                bio: true,
+                banner: true,
+                _count: {
+                    select: {
+                        posts: true,
+                        followers: true,
+                        following: true,
+                    }
+                }
+            }
+        });
+
+        res.status(200).json({ profileData });
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
 
 // Get posts of a user
 const getUsersPosts = async (req, res) => {
@@ -116,14 +169,17 @@ const getUsersPosts = async (req, res) => {
                 title: true,
                 description: true,
                 pictures: true,
+                impressions: true,
+                originalPostId: true,
+                repostedPosts: true,
                 createdAt: true,
-                user: {
+                User: {
                     select: {
                         id: true,
                         username: true,
                         firstName: true,
                         lastName: true,
-
+                        Type: true,
                     }
                 },
                 _count: {
@@ -137,6 +193,13 @@ const getUsersPosts = async (req, res) => {
             skip: (page - 1) * limit,
             take: limit,
         });
+
+        await Promise.all(posts.map(async (post) => {
+            await pclient.post.update({
+                where: { id: post.id },
+                data: { impressions: { increment: 1 } }
+            });
+        }));
 
         res.status(200).json({ posts });
     } catch (error) {
@@ -160,7 +223,7 @@ const getUserFollowers = async (req, res) => {
                         username: true,
                         firstName: true,
                         lastName: true,
-
+                        Type: true,
                     }
                 }
             },
@@ -191,7 +254,7 @@ const getUserFollowing = async (req, res) => {
                         username: true,
                         firstName: true,
                         lastName: true,
-
+                        Type: true,
                     }
                 }
             },
@@ -206,4 +269,4 @@ const getUserFollowing = async (req, res) => {
     }
 };
 
-module.exports = { getCommentsOfPosts, getLikesOfPosts, getUsersStartingWith, getUsersPosts, getUserFollowers, getUserFollowing };
+module.exports = { getCommentsOfPosts, getLikesOfPosts, getRestaurantStartingWith, getUsersStartingWith, getUserProfileSummary, getUsersPosts, getUserFollowers, getUserFollowing };

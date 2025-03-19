@@ -173,9 +173,7 @@ const getOtherProfile = async (req, res) => {
                 username: true,
                 firstName: true,
                 lastName: true,
-                Type: true,
                 bio: true,
-                banner: true,
                 _count: {
                     select: {
                         posts: true,
