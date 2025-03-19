@@ -11,7 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
     try {
-        const { email, username, password, firstName, lastName, college, country, bio, City} = req.body;
+        const { email, username, password, firstName, lastName, college, country, bio, City, tech} = req.body;
 
         const existingUser = await pclient.user.findFirst({
             where: { OR: [{ email }, { username }] }
@@ -34,6 +34,7 @@ const register = async (req, res) => {
                 bio: bio,
                 City: City,
                 College: college,
+                Tech: tech
             }
         });
 
@@ -62,7 +63,7 @@ const login = async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRES_IN,
+            expiresIn: process.env.EXPIRES_IN,
         });
 
         res.json({ message: "Login successful", token, userId: user.id, userType: user.Type });
