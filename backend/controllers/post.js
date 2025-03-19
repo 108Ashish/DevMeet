@@ -1,7 +1,8 @@
-import pclinent from "../db/client.js";
+const { PrismaClient } = require('@prisma/client');
 
+const pclient = new PrismaClient();
 
-export const getCommentsOfPosts = async (req, res) => {
+const getCommentsOfPosts = async (req, res) => {
     try {
         const { postId } = req.body;
         const page = parseInt(req.query.page) || 1;
@@ -36,7 +37,7 @@ export const getCommentsOfPosts = async (req, res) => {
 };
 
 // Get likes of a post
-export const getLikesOfPosts = async (req, res) => {
+const getLikesOfPosts = async (req, res) => {
     try {
         const { postId } = req.body;
         const page = parseInt(req.query.page) || 1;
@@ -67,8 +68,7 @@ export const getLikesOfPosts = async (req, res) => {
     }
 };
 
-Search for restaurants starting with a keyword
-export const getRestaurantStartingWith = async (req, res) => {
+const getRestaurantStartingWith = async (req, res) => {
     try {
         const { restaurant } = req.body;
 
@@ -94,7 +94,7 @@ export const getRestaurantStartingWith = async (req, res) => {
 };
 
 // Search for users starting with a username
-export const getUsersStartingWith = async (req, res) => {
+const getUsersStartingWith = async (req, res) => {
     try {
         const { username } = req.body;
 
@@ -117,7 +117,7 @@ export const getUsersStartingWith = async (req, res) => {
 };
 
 // Get user profile summary
-export const getUserProfileSummary = async (req, res) => {
+const getUserProfileSummary = async (req, res) => {
     try {
         const { userId } = req.body;
 
@@ -148,7 +148,7 @@ export const getUserProfileSummary = async (req, res) => {
 };
 
 // Get posts of a user
-export const getUsersPosts = async (req, res) => {
+const getUsersPosts = async (req, res) => {
     try {
         const { userId } = req.body;
         const page = parseInt(req.query.page) || 1;
@@ -200,7 +200,7 @@ export const getUsersPosts = async (req, res) => {
 };
 
 // Get followers of a user
-export const getUserFollowers = async (req, res) => {
+const getUserFollowers = async (req, res) => {
     try {
         const { userId } = req.body;
         const page = parseInt(req.query.page) || 1;
@@ -231,7 +231,7 @@ export const getUserFollowers = async (req, res) => {
 };
 
 // Get following users of a user
-export const getUserFollowing = async (req, res) => {
+const getUserFollowing = async (req, res) => {
     try {
         const { userId } = req.body;
         const page = parseInt(req.query.page) || 1;
@@ -261,3 +261,13 @@ export const getUserFollowing = async (req, res) => {
     }
 };
 
+// pclient.tech.create({
+//     where: {
+//         userId: ""
+//     },
+//     data: {
+//         tech: "Node.js"
+//     }
+// })
+
+module.exports = { getCommentsOfPosts, getLikesOfPosts, getRestaurantStartingWith, getUsersStartingWith, getUserProfileSummary, getUsersPosts, getUserFollowers, getUserFollowing };
