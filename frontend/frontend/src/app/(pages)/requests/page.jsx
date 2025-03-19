@@ -3,7 +3,7 @@ import React from 'react';
 import { Layout, Card, Avatar, Button, Input, Space } from "antd";
 import { LikeOutlined, CommentOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { useRequests } from '../../context/request';
-import Sidebar from '@/app/components/Sidebar';
+import Sidebar from '../../components/Sidebar';
 
 const { Content } = Layout;
 const { TextArea } = Input;

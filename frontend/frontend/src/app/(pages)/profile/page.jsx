@@ -1,6 +1,6 @@
 "use client"
 
-import Sidebar from "@/app/components/Sidebar"
+import Sidebar from "../../components/Sidebar"
 import Image from "next/image"
 import { useState } from "react"
 import { Layout } from "antd"
