@@ -24,6 +24,7 @@ model User {
   City      String
   College   String
   Country   String
+  Github    String    @unique
   Tech      String[]
   posts     Post[]
   likes     Like[]

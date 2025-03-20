@@ -11,7 +11,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
     try {
-        const { email, username, password, firstName, lastName, college, country, bio, City, tech} = req.body;
+        const { email, username, password, firstName, lastName, college, country, bio, City, tech, github} = req.body;
+
+        console.log(tech)
+        console.log("Github:", github);
 
         const existingUser = await pclient.user.findFirst({
             where: { OR: [{ email }, { username }] }
@@ -22,7 +25,7 @@ const register = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
+        
         const user = await pclient.user.create({
             data: {
                 email:email,
@@ -34,7 +37,8 @@ const register = async (req, res) => {
                 bio: bio,
                 City: City,
                 College: college,
-                Tech: tech
+                Tech: tech,
+                Github: github
             }
         });
 

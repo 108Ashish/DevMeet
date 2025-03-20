@@ -10,6 +10,8 @@ CREATE TABLE "User" (
     "City" TEXT NOT NULL,
     "College" TEXT NOT NULL,
     "Country" TEXT NOT NULL,
+    "Github" TEXT NOT NULL,
+    "Tech" TEXT[],
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -57,22 +59,6 @@ CREATE TABLE "Follows" (
     CONSTRAINT "Follows_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Tech" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-
-    CONSTRAINT "Tech_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_TechToUser" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL,
-
-    CONSTRAINT "_TechToUser_AB_pkey" PRIMARY KEY ("A","B")
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -80,7 +66,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
-CREATE INDEX "_TechToUser_B_index" ON "_TechToUser"("B");
+CREATE UNIQUE INDEX "User_Github_key" ON "User"("Github");
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -102,9 +88,3 @@ ALTER TABLE "Follows" ADD CONSTRAINT "Follows_followerId_fkey" FOREIGN KEY ("fol
 
 -- AddForeignKey
 ALTER TABLE "Follows" ADD CONSTRAINT "Follows_followingId_fkey" FOREIGN KEY ("followingId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_TechToUser" ADD CONSTRAINT "_TechToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Tech"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_TechToUser" ADD CONSTRAINT "_TechToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
