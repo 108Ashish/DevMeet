@@ -1,9 +1,9 @@
 "use client"
 
 import Sidebar from "../../components/Sidebar"
-import Image from "next/image"
+
 import { useState } from "react"
-import { Layout } from "antd"
+import { Layout,Image } from "antd"
 const {Content} = Layout
 
 export default function Page() {
@@ -12,10 +12,10 @@ export default function Page() {
   return (
     <Layout style={{ minHeight: "100vh", display: "flex" }}>
       <Sidebar/>
-      <Content><div className=" bg-[#0f0f0f] text-white " /* style={{paddingLeft:"130px",paddingTop:"40px"}} */ >
+      <Content><div className=" bg-[#141414] text-white " /* style={{paddingLeft:"130px",paddingTop:"40px"}} */ >
       {/* Header with purple gradient */}
       <div className="relative mr-auto" >
-        <div className="h-40 bg-gradient-to-r from-[#5D3FD3] to-[#8A2BE2]"></div>
+        <div className="h-40 bg-gradient-to-r"></div>
 
         {/* Profile section */}
         <div className="container mx-auto px-8">
@@ -23,13 +23,10 @@ export default function Page() {
             {/* Profile image */}
             <div className="flex-shrink-0">
               <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#121212]">
-                <Image
-                  src="/placeholder.svg?height=128&width=128"
-                  alt="Irene Brooks"
-                  width={128}
-                  height={128}
-                  className="object-cover w-full h-full"
-                />
+              <Image
+    width={200}
+    src="https://i.pravatar.cc/40?img=3"
+  />
               </div>
             </div>
 
@@ -38,11 +35,11 @@ export default function Page() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h1 className="text-2xl font-bold">Irene Brooks</h1>
+                    <h1 className="text-2xl font-bold">Harshit Shrivastava</h1>
                     <span className="bg-[#5D3FD3] text-white text-xs px-2 py-0.5 rounded-full">PRO</span>
                   </div>
                   <p className="text-gray-300 mt-1">Interface and Brand Designer</p>
-                  <p className="text-gray-400 text-sm">based in San Antonio</p>
+                  <p className="text-gray-400 text-sm">based in India</p>
                 </div>
 
                 {/* Stats for desktop */}
