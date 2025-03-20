@@ -4,7 +4,6 @@ import "../../components/style.css";
 export default function page() {
   return (
     <div className="signin-container">
-      <div className="glowingg-effect"></div>
       <div className="logo-container">
         <Image
           src="/logo.png"
@@ -24,6 +23,8 @@ export default function page() {
             className="signin-input"
           />
           <button className="signin-btn">Login</button>
+          <h1>Don't have an account?</h1>
+          <h4 className="s">Sign Up</h4>
         </form>
       </div>
     </div>
