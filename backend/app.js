@@ -2,6 +2,7 @@ const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const authRouter = require('./routes/auth');
 const publicRoutes = require('./routes/public');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get('/check', (req, res) => {
 
 app.use('/auth', authRouter);
 app.use('/public', publicRoutes)
+app.use('/user', userRoutes)
 
 app.listen(3000,()=>{
     console.log('Server is running on port 3000');

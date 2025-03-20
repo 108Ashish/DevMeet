@@ -24,7 +24,8 @@ model User {
   City      String
   College   String
   Country   String
-  Tech      Tech[]
+  Github    String    @unique
+  Tech      String[]
   posts     Post[]
   likes     Like[]
   comments  Comment[]
@@ -70,10 +71,4 @@ model Follows {
   follower    User   @relation("FollowersRelation", fields: [followerId], references: [id])
   followingId String
   following   User   @relation("FollowingRelation", fields: [followingId], references: [id])
-}
-
-model Tech {
-  id   String @id @default(cuid())
-  name String
-  User User[]
 }

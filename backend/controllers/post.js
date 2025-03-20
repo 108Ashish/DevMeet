@@ -21,7 +21,7 @@ const getCommentsOfPosts = async (req, res) => {
                         firstName: true,
                         lastName: true,
                         
-                        Type: true,
+
                     }
                 }
             },
@@ -43,6 +43,15 @@ const getLikesOfPosts = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
 
+        const post = await pclient.post.findUnique({
+            where: { id: postId },
+            select: { id: true }
+        });
+
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+
         const likes = await pclient.like.findMany({
             where: { postId: postId },
             select: {
@@ -53,17 +62,16 @@ const getLikesOfPosts = async (req, res) => {
                         username: true,
                         firstName: true,
                         lastName: true,
-                        Type: true,
                     }
                 }
             },
-            orderBy: { createdAt: 'desc' },
             skip: (page - 1) * limit,
             take: limit,
         });
 
         res.status(200).json({ likes });
     } catch (error) {
+        console.error('Error in getLikesOfPosts:', error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -260,14 +268,5 @@ const getUserFollowing = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
-
-// pclient.tech.create({
-//     where: {
-//         userId: ""
-//     },
-//     data: {
-//         tech: "Node.js"
-//     }
-// })
 
 module.exports = { getCommentsOfPosts, getLikesOfPosts, getRestaurantStartingWith, getUsersStartingWith, getUserProfileSummary, getUsersPosts, getUserFollowers, getUserFollowing };
