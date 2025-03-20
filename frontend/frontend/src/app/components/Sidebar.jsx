@@ -21,17 +21,18 @@ export default function Sidebar() {
   return (
     <Sider
       width={250}
-      theme="dark"
+      
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
       style={{
-        background: "#001529",
+        background: "#141414",
         overflow: "auto",
         height: "100vh",
+        position:"sticky",
         top:0,
-        left:0
-        
+        left:0,
+        borderRight:"0.1px solid rgba(255, 255, 255, 0.417)"
         
       }}
     >
@@ -41,7 +42,7 @@ export default function Sidebar() {
         </Title>
       </div>
 
-      <Menu mode="vertical" theme="dark" defaultSelectedKeys={["feed"]} style={{ background: "#001529" }}>
+      <Menu mode="vertical" theme="dark" defaultSelectedKeys={["feed"]} style={{ background: "#141414" }}>
         <Menu.Item key="profile" icon={<UserOutlined />} onClick={() => router.push("/profile")}>
           Profile
         </Menu.Item>

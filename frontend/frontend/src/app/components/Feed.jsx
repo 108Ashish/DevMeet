@@ -1,11 +1,24 @@
 "use client"
-import { Card, Avatar, Button, Input, Space, Typography, Divider } from "antd"
+import { useState } from "react"
+import { Card, Avatar, Button, Input, Space, Typography, Divider,Modal } from "antd"
 import { LikeOutlined, CommentOutlined, ShareAltOutlined } from "@ant-design/icons"
 
 const { TextArea } = Input
 const { Title, Text } = Typography
 
 export default function Feed() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const posts = [
     {
       id: "1",
@@ -16,6 +29,7 @@ export default function Feed() {
       avatar: "https://i.pravatar.cc/40?img=3",
       likes: 24,
       comments: 5,
+      Status:""
     },
     {
       id: "2",
@@ -26,6 +40,7 @@ export default function Feed() {
       avatar: "https://i.pravatar.cc/40?img=4",
       likes: 18,
       comments: 3,
+
     },
     {
       id: "3",
@@ -72,6 +87,7 @@ export default function Feed() {
   }
 
   return (
+    
     <div style={{ padding: "20px 0" }}>
       {posts.map((post) => (
         <Card
@@ -87,13 +103,29 @@ export default function Feed() {
           <Space align="start">
             <Avatar src={post.avatar} size={40} />
             <div>
-              <Text strong style={{ color: "white", fontSize: "16px" }}>
+              <div style={{display:"flex", justifyContent:"space-between"}}>
+                 <div>
+                <Text strong style={{ color: "white", fontSize: "16px" }}>
                 {post.author}
               </Text>
               <Text style={{ color: "#aaa", marginLeft: "5px" }}>is at {post.location}</Text>
+              </div>
+              
+              <div >
+                <Button onClick={showModal} type="primary" >Details</Button>
+              </div>
+              </div>
+             
+              
+              <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
               <div>
                 <Text style={{ color: "#888", fontSize: "12px" }}>{post.timestamp}</Text>
               </div>
+
             </div>
           </Space>
 
