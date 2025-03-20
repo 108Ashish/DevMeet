@@ -6,30 +6,23 @@ body {
   overflow: hidden;
 }
 .logo {
-  height: 100px;
-  width: auto;
+  height: 150px;
+  width: 200px;
 }
-.glowing-effect {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle at bottom,
-    rgba(30, 58, 138, 0.8) 20%,
-    rgba(84, 56, 222, 0.545) 40%,
-    rgba(0, 0, 0, 0) 80%
-  );
-  filter: blur(90px);
-  opacity: 0.7;
-}
+
 .navbar {
   cursor: pointer;
+  margin-top: 3px;
+  height: 10px;
   display: flex;
-  gap: 80px;
+  gap: 60px;
   justify-content: center;
   align-items: center;
   color: rgb(183, 182, 182);
   margin-right: 40px;
+}
+.main {
+  display: inline;
 }
 
 .nav a {
@@ -74,11 +67,11 @@ body {
 .signupp-btn {
   background-color: rgb(74, 140, 239);
   color: white;
-  font-size: 29px;
+  font-size: 20px;
   font-weight: bold;
-  padding: 12px 24px;
+  padding: 10px 24px;
   border: 0cm;
-  border-radius: 80px;
+  border-radius: 15px;
   cursor: pointer;
   margin-top: 20px;
   opacity: 0;
@@ -88,11 +81,11 @@ body {
 .signinn-btn {
   background-color: rgb(74, 140, 239);
   color: white;
-  font-size: 29px;
+  font-size: 20px;
   font-weight: bold;
-  padding: 12px 24px;
+  padding: 10px 24px;
   border: 0cm;
-  border-radius: 80px;
+  border-radius: 15px;
   cursor: pointer;
   margin-top: 20px;
   opacity: 0;
@@ -161,8 +154,8 @@ body {
   left: 20px;
 }
 .signin-logo {
-  width: 120px;
-  height: auto;
+  width: 150px;
+  margin-top: 20px;
   object-fit: contain;
 }
 .signin-container {
@@ -174,22 +167,9 @@ body {
   position: relative;
   overflow: hidden;
 }
-.glowingg-effect {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle at bottom,
-    rgba(30, 58, 138, 0.8) 20%,
-    rgba(84, 56, 222, 0.545) 40%,
-    rgba(0, 0, 0, 0) 80%
-  );
-  filter: blur(90px);
-  opacity: 0.7;
-  z-index: 1;
-}
+
 .signin-box {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(185, 144, 209, 0.57);
   backdrop-filter: blur(15px);
   padding: 2rem;
   border-radius: 12px;
@@ -220,16 +200,16 @@ body {
   width: 100%;
   outline: none;
   transition: border 0.3s;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: rgba(248, 242, 242, 0.825);
+  color: #0a0909;
 }
 
 .signin-input:focus {
   border-color: #007bff;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(249, 244, 248, 0.829);
 }
 .signin-btn {
-  background-color: #007bff;
+  background-color: #1c1d1f;
   color: white;
   padding: 12px;
   border: none;
@@ -240,7 +220,7 @@ body {
 }
 
 .signin-btn:hover {
-  background-color: #0056b3;
+  background-color: rgba(185, 144, 209, 0.57);
 }
 .signin-title {
   font-size: 1.8rem;
@@ -251,89 +231,13 @@ body {
   max-width: 90%;
   line-height: 1.4;
 }
-/*Sign up page*/
-.signup-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #121212;
-  position: relative;
-  overflow: hidden;
-}
-.glowingg-effect {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle at bottom,
-    rgba(30, 58, 138, 0.8) 20%,
-    rgba(84, 56, 222, 0.545) 40%,
-    rgba(0, 0, 0, 0) 80%
-  );
-  filter: blur(90px);
-  opacity: 0.7;
-  z-index: 1;
-}
-.signup-box {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  width: 380px;
-  position: relative;
-  z-index: 2;
-}
-.signup-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 1rem;
-  text-align: center;
-  max-width: 90%;
-  line-height: 1.4;
-}
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-}
-.signup-form label {
-  font-size: 1rem;
-  font-weight: 500;
-  text-align: left;
-  color: #fff;
-}
-.signup-input {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  width: 100%;
-  outline: none;
-  transition: border 0.3s;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
 
-.signup-input:focus {
-  border-color: #007bff;
-  background: rgba(255, 255, 255, 0.3);
-}
-.signup-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+.s {
+  text-decoration: underline;
   cursor: pointer;
-  transition: background 0.3s;
+  color: #0a080b;
 }
 
-.signup-btn:hover {
-  background-color: #0056b3;
+.s:hover {
+  color: rgb(198, 198, 236);
 }
