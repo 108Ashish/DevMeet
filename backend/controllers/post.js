@@ -159,6 +159,7 @@ const getUserProfileSummary = async (req, res) => {
 const getUsersPosts = async (req, res) => {
     try {
         const { userId } = req.body;
+
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
 
@@ -168,18 +169,16 @@ const getUsersPosts = async (req, res) => {
                 id: true,
                 title: true,
                 description: true,
-                pictures: true,
-                impressions: true,
-                originalPostId: true,
-                repostedPosts: true,
+                updatedAt: true,
+                Tech: true,
+                Status: true,
                 createdAt: true,
-                User: {
+                user: { // lowercase 'user' to match Prisma relation
                     select: {
                         id: true,
                         username: true,
                         firstName: true,
                         lastName: true,
-                        Type: true,
                     }
                 },
                 _count: {
@@ -194,48 +193,47 @@ const getUsersPosts = async (req, res) => {
             take: limit,
         });
 
-        await Promise.all(posts.map(async (post) => {
-            await pclient.post.update({
-                where: { id: post.id },
-                data: { impressions: { increment: 1 } }
-            });
-        }));
+        // Increment impressions if the field exists in your schema
+        
 
         res.status(200).json({ posts });
     } catch (error) {
+        console.error("Error fetching user posts:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
 
+
 // Get followers of a user
 const getUserFollowers = async (req, res) => {
-    try {
-        const { userId } = req.body;
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+  try {
+    const { userId } = req.body;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-        const followers = await pclient.follows.findMany({
-            where: { followerId: userId },
-            select: {
-                follower: {
-                    select: {
-                        id: true,
-                        username: true,
-                        firstName: true,
-                        lastName: true,
-                        Type: true,
-                    }
-                }
-            },
-            orderBy: { followerId: 'asc' },
-            skip: (page - 1) * limit,
-            take: limit,
-        });
+    const followers = await pclient.follows.findMany({
+      where: { followingId: userId }, // ✅ Who is following userId
+      select: {
+        follower: { // ✅ info about the follower
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+           
+          },
+        },
+      },
+      orderBy: { followerId: 'asc' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
 
-        res.status(200).json({ followers });
-    } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
-    }
+    res.status(200).json({ followers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 // Get following users of a user
@@ -254,7 +252,7 @@ const getUserFollowing = async (req, res) => {
                         username: true,
                         firstName: true,
                         lastName: true,
-                        Type: true,
+                       
                     }
                 }
             },

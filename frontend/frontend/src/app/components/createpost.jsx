@@ -5,16 +5,41 @@ import { Card, Button, Input, Avatar, Space, Divider } from "antd"
 import { UserOutlined, PictureOutlined, VideoCameraOutlined, SmileOutlined, SendOutlined } from "@ant-design/icons"
 
 const { TextArea } = Input
+import axios from "axios"
 
 export default function CreatePost() {
   const [postContent, setPostContent] = useState("")
+  const [loading , setloading] = useState(false);
 
-  const handlePost = () => {
-    if (postContent.trim()) {
-      console.log("Posting:", postContent)
-      setPostContent("")
+  
+
+  const handlePost = async () => {
+    if (!postContent.trim()) {
+      message.warning("Post content cannot be empty!");
+      return;
     }
-  }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:3000/user/create-post", {
+        userId,
+        content: postContent,
+        media: "", // If you have media, replace with actual data
+      });
+
+      console.log("Post successful:", response.data);
+      message.success("Post created successfully!");
+
+      // Reset state after successful post
+      setPostContent("");
+    } catch (error) {
+      console.error("Error creating post:", error);
+      message.error("Failed to create post. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Card
@@ -63,11 +88,15 @@ export default function CreatePost() {
           </Button>
         </Space>
 
-        <Button type="primary" icon={<SendOutlined />} onClick={handlePost} disabled={!postContent.trim()}>
+        <Button type="primary" icon={<SendOutlined />} onClick={handlePost}   loading={loading} disabled={!postContent.trim()}>
           Post
         </Button>
       </div>
     </Card>
   )
 }
+
+
+
+
 

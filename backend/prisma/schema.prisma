@@ -39,9 +39,10 @@ model Post {
   updatedAt   DateTime  @updatedAt
   title       String
   description String
-  pictures    String
+  Status      String
   userId      String
   user        User      @relation(fields: [userId], references: [id])
+  Tech      String[]
   likes       Like[]
   comments    Comment[]
 }

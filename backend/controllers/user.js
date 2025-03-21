@@ -97,13 +97,21 @@ const likeUnlikePost = async(req, res)=> {
 
 const createPost = async (req, res) => {
     try {
-        const { title, description, pictures, userId } = req.body;
+        const { title, description, Tech , Status, userId } = req.body;
+        const user = await pclient.user.findUnique({
+            where: { id: userId },
+          });
+      
+          if (!user) {
+            return res.status(404).json({ error: "User not found." });
+          }
 
         const newPost = await pclient.post.create({
             data: {
                 title,
                 description,
-                pictures,
+                Tech,
+                Status,
                 userId,
     },
     });

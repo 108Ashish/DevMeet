@@ -2,16 +2,17 @@
 import React, { useState } from "react";
 import { Card, Button, Input, Select, message } from "antd";
 import { useRouter } from "next/navigation";
-import styles from "./Signup.module.css";
+import axios from "axios"; // Ensure axios is imported
+import styles from "./signup.module.css";
 
 const { Option } = Select;
 
-export default function Signup() {
+export default function page() {
   const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // Added loading state
 
   const steps = [
     {
@@ -42,6 +43,7 @@ export default function Signup() {
         { field: "city", type: "text", placeholder: "Enter your city" },
         { field: "country", type: "text", placeholder: "Enter your country" },
         { field: "technology", type: "select" },
+        { field: "github", type: "text", placeholder: "Enter your GitHub URL" }, // GitHub field added
       ],
     },
     {
@@ -65,7 +67,7 @@ export default function Signup() {
   const validateFields = () => {
     const newErrors = {};
     steps[current].fields.forEach(({ field }) => {
-      if (!formData[field]) {
+      if (!formData[field] || formData[field].toString().trim() === "") {
         newErrors[field] = "Please fill this field";
       }
     });
@@ -88,24 +90,38 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const payload = {
+        email: formData.email,
+        username: formData.username,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        college: formData.college,
+        country: formData.country,
+        bio: formData.bio,
+        tech: Array.isArray(formData.technology)
+          ? formData.technology
+          : [formData.technology], // Ensure array format
+        City: formData.city,
+        github: formData.github || "",
+      };
 
-      const data = await response.json();
-      setLoading(false);
+      const response = await axios.post(
+        "http://localhost:3000/auth/signUp",
+        payload
+      );
 
-      if (response.ok) {
+      if (response.status === 200 || response.status === 201) {
         message.success("Signup successful! Redirecting...");
-        router.push("/dashboard"); // Redirect user after signup
+        router.push("/explore");
       } else {
-        message.error(data.message || "Signup failed!");
+        message.error(response.data.message || "Signup failed!");
       }
     } catch (error) {
-      setLoading(false);
+      console.error("Signup error:", error);
       message.error("Error connecting to the server.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -113,6 +129,7 @@ export default function Signup() {
     <div className={styles.container}>
       <h2 className={styles.heading}>Sign Up</h2>
       <Card className={styles.card} variant="outlined">
+        {/* Stepper UI */}
         <div className={styles.stepsContainer}>
           {steps.map((step, index) => (
             <React.Fragment key={index}>
@@ -134,6 +151,7 @@ export default function Signup() {
           ))}
         </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className={styles.content}>
           {steps[current].fields.map((fieldObj, index) => (
             <div key={index}>
@@ -141,10 +159,10 @@ export default function Signup() {
                 <Select
                   placeholder="Choose Tech"
                   className={styles.input}
-                  value={formData[fieldObj.field] || ""}
+                  mode="multiple" // Allows multiple selections
+                  value={formData[fieldObj.field] || []}
                   onChange={(value) => handleChange(fieldObj.field, value)}
                 >
-                  <Option value="">Choose Tech</Option>
                   <Option value="Web Development">Web Development</Option>
                   <Option value="App Development">App Development</Option>
                   <Option value="Full Stack">Full Stack</Option>
@@ -162,7 +180,9 @@ export default function Signup() {
                   placeholder={fieldObj.placeholder}
                   className={styles.input}
                   value={formData[fieldObj.field] || ""}
-                  onChange={(e) => handleChange(fieldObj.field, e.target.value)}
+                  onChange={(e) =>
+                    handleChange(fieldObj.field, e.target.value)
+                  }
                 />
               )}
               {errors[fieldObj.field] && (

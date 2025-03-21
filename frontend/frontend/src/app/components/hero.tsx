@@ -36,8 +36,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-gray-400 text-xl mb-8 max-w-2xl mx-auto"
           >
-            Upload your research papers and let our AI transform them into engaging presentations, podcasts, and visual
-            content.
+            Post your projects, ideas, or research, and let our platform connect you with like-minded developers.
           </motion.p>
 
           <motion.div

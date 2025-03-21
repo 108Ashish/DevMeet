@@ -13,8 +13,8 @@ const register = async (req, res) => {
     try {
         const { email, username, password, firstName, lastName, college, country, bio, City, tech, github} = req.body;
 
-        console.log(tech)
-        console.log("Github:", github);
+        // console.log(tech)
+        // console.log("Github:", github);
 
         const existingUser = await pclient.user.findFirst({
             where: { OR: [{ email }, { username }] }

@@ -23,8 +23,9 @@ CREATE TABLE "Post" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "pictures" TEXT NOT NULL,
+    "Status" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "Tech" TEXT[],
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
