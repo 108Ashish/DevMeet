@@ -3,8 +3,8 @@
 import { Button } from "antd"
 import { motion } from "framer-motion"
 import { FileText, Sparkles } from "lucide-react"
-import { FloatingPaper } from  "../../components/floating-paper"
-import { RoboAnimation } from "../../components/robo-animation"
+import { FloatingPaper } from  "./floating-paper"
+import { RoboAnimation } from "./robo-animation"
 import { useRouter } from "next/navigation"
 
 
@@ -20,12 +20,13 @@ export default function Hero() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-              Transform Your Research with
+            <h1 className="text-4xl md:text-2xl lg:text-3xl font-bold text-white mb-6">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
                 {" "}
-                AI Power
+                DevMeet
               </span>
+              – Connect, Collaborate, Create. Build the future with developers worldwide!
+              
             </h1>
           </motion.div>
 
