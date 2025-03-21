@@ -267,4 +267,58 @@ const getUserFollowing = async (req, res) => {
     }
 };
 
-module.exports = { getCommentsOfPosts, getLikesOfPosts, getRestaurantStartingWith, getUsersStartingWith, getUserProfileSummary, getUsersPosts, getUserFollowers, getUserFollowing };
+const getRecommendations = async (req, res) => {
+    try {
+        const { userId } = req.body;
+
+        // Fetch the user's tech stack
+        const user = await pclient.user.findUnique({
+            where: { id: userId },
+            select: { Tech: true }
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const userTechStack = user.Tech;
+
+        // Find all projects
+        const projects = await pclient.post.findMany({
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                Tech: true,
+                createdAt: true
+            }
+        });
+
+        // Calculate cosine similarity and sort projects
+        const recommendedProjects = projects.map(project => {
+            const projectTechStack = project.Tech;
+
+            // Create a set of all unique techs
+            const allTechs = Array.from(new Set([...userTechStack, ...projectTechStack]));
+
+            // Create vectors for user and project tech stacks
+            const userVector = allTechs.map(tech => userTechStack.includes(tech) ? 1 : 0);
+            const projectVector = allTechs.map(tech => projectTechStack.includes(tech) ? 1 : 0);
+
+            // Calculate cosine similarity
+            const dotProduct = userVector.reduce((sum, val, index) => sum + val * projectVector[index], 0);
+            const userMagnitude = Math.sqrt(userVector.reduce((sum, val) => sum + val * val, 0));
+            const projectMagnitude = Math.sqrt(projectVector.reduce((sum, val) => sum + val * val, 0));
+            const similarity = dotProduct / (userMagnitude * projectMagnitude);
+
+            return { ...project, similarity };
+        }).sort((a, b) => b.similarity - a.similarity);
+
+        res.status(200).json({ projects: recommendedProjects });
+    } catch (error) {
+        console.error('Error in getRecommendations:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+module.exports = { getCommentsOfPosts, getLikesOfPosts, getRestaurantStartingWith, getUsersStartingWith, getUserProfileSummary, getUsersPosts, getUserFollowers, getUserFollowing, getRecommendations};
