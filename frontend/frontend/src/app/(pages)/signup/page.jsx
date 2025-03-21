@@ -1,98 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import { Card, Steps, Button, Input, Select } from "antd";
+import { Card, Button, Input, Select, message } from "antd";
 import { useRouter } from "next/navigation";
+import styles from "./Signup.module.css";
 
 const { Option } = Select;
-
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-    background: "rgba(7, 6, 7, 0.57)",
-    overflow: "hidden",
-  },
-  heading: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: "20px",
-  },
-  card: {
-    width: "40%",
-    minWidth: "500px",
-    padding: "30px",
-    background: "rgba(185, 144, 209, 0.57)",
-    boxShadow: "0 4px 12px rgba(178, 148, 195, 0.57)",
-    borderRadius: "10px",
-    textAlign: "center",
-  },
-  stepsContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "20px",
-    position: "relative",
-  },
-  stepLine: (isActive) => ({
-    flex: 1,
-    height: "4px",
-    background: isActive ? "rgba(10, 1, 15, 0.57)" : "#d9d9d9",
-    transition: "background 0.3s ease-in-out",
-    margin: "0 5px",
-  }),
-  stepCircle: (isActive) => ({
-    width: "30px",
-    height: "30px",
-    borderRadius: "50%",
-    background: isActive ? "black" : "#d9d9d9",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "white",
-    fontWeight: "bold",
-  }),
-  content: {
-    marginTop: "20px",
-    minHeight: "120px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  errorText: {
-    color: "rgba(65, 1, 1, 0.93)",
-    fontSize: "19px",
-    marginTop: "4px",
-  },
-  buttonContainer: {
-    marginTop: "20px",
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  button: {
-    backgroundColor: "black",
-    color: "white",
-    border: "none",
-    transition: "0.3s",
-  },
-  input: {
-    backgroundColor: "white",
-    color: "black",
-    width: "100%",
-    padding: "8px",
-    borderRadius: "5px",
-    border: "1px solid #d9d9d9",
-  },
-};
 
 export default function Signup() {
   const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const steps = [
     {
@@ -147,7 +66,7 @@ export default function Signup() {
     const newErrors = {};
     steps[current].fields.forEach(({ field }) => {
       if (!formData[field]) {
-        newErrors[field] = "Please fill this";
+        newErrors[field] = "Please fill this field";
       }
     });
     setErrors(newErrors);
@@ -162,28 +81,66 @@ export default function Signup() {
 
   const prev = () => setCurrent(current - 1);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateFields()) return;
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      setLoading(false);
+
+      if (response.ok) {
+        message.success("Signup successful! Redirecting...");
+        router.push("/dashboard"); // Redirect user after signup
+      } else {
+        message.error(data.message || "Signup failed!");
+      }
+    } catch (error) {
+      setLoading(false);
+      message.error("Error connecting to the server.");
+    }
+  };
+
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Sign Up</h2>
-      <Card style={styles.card} variant="outlined">
-        <div style={styles.stepsContainer}>
+    <div className={styles.container}>
+      <h2 className={styles.heading}>Sign Up</h2>
+      <Card className={styles.card} variant="outlined">
+        <div className={styles.stepsContainer}>
           {steps.map((step, index) => (
             <React.Fragment key={index}>
-              <div style={styles.stepCircle(index <= current)}>{index + 1}</div>
+              <div
+                className={`${styles.stepCircle} ${
+                  index <= current ? styles.active : ""
+                }`}
+              >
+                {index + 1}
+              </div>
               {index < steps.length - 1 && (
-                <div style={styles.stepLine(index < current)}></div>
+                <div
+                  className={`${styles.stepLine} ${
+                    index < current ? styles.active : ""
+                  }`}
+                />
               )}
             </React.Fragment>
           ))}
         </div>
 
-        <div style={styles.content}>
+        <form onSubmit={handleSubmit} className={styles.content}>
           {steps[current].fields.map((fieldObj, index) => (
             <div key={index}>
               {fieldObj.type === "select" ? (
                 <Select
                   placeholder="Choose Tech"
-                  style={styles.input}
+                  className={styles.input}
                   value={formData[fieldObj.field] || ""}
                   onChange={(value) => handleChange(fieldObj.field, value)}
                 >
@@ -203,34 +160,39 @@ export default function Signup() {
                 <Input
                   type={fieldObj.type}
                   placeholder={fieldObj.placeholder}
-                  style={styles.input}
+                  className={styles.input}
                   value={formData[fieldObj.field] || ""}
                   onChange={(e) => handleChange(fieldObj.field, e.target.value)}
                 />
               )}
               {errors[fieldObj.field] && (
-                <div style={styles.errorText}>{errors[fieldObj.field]}</div>
+                <div className={styles.errorText}>{errors[fieldObj.field]}</div>
               )}
             </div>
           ))}
-        </div>
 
-        <div style={styles.buttonContainer}>
-          {current > 0 && (
-            <Button style={styles.button} onClick={prev}>
-              Previous
-            </Button>
-          )}
-          {current < steps.length - 1 ? (
-            <Button style={styles.button} onClick={next}>
-              Next
-            </Button>
-          ) : (
-            <Button style={styles.button} onClick={() => router.push("/")}>
-              Sign Up
-            </Button>
-          )}
-        </div>
+          <div className={styles.buttonContainer}>
+            {current > 0 && (
+              <Button className={styles.button} onClick={prev}>
+                Previous
+              </Button>
+            )}
+            {current < steps.length - 1 ? (
+              <Button className={styles.button} onClick={next}>
+                Next
+              </Button>
+            ) : (
+              <Button
+                className={styles.button}
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+              >
+                Sign Up
+              </Button>
+            )}
+          </div>
+        </form>
       </Card>
     </div>
   );

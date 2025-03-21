@@ -1,67 +1,65 @@
-"use client"
+import "../../components/style.css";
+import Image from "next/image";
 
-import { Button } from "antd"
-import { motion } from "framer-motion"
-import { FileText, Sparkles } from "lucide-react"
-import { FloatingPaper } from  "../../components/floating-paper"
-import { RoboAnimation } from "../../components/robo-animation"
-import { useRouter } from "next/navigation"
-
-
-export default function Hero() {
-    const route = useRouter();
+const Page = () => {
   return (
-    <div className="relative min-h-[calc(100vh-76px)] flex items-center">
-      {/* Floating papers background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <FloatingPaper count={6} />
+    <div className="signin-container">
+      <div className="logo-container">
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={240}
+          height={200}
+          className="signin-logo"
+        />
       </div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-              Transform Your Research with
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                {" "}
-                AI Power
-              </span>
-            </h1>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-gray-400 text-xl mb-8 max-w-2xl mx-auto"
-          >
-            Upload your research papers and let our AI transform them into engaging presentations, podcasts, and visual
-            content.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <Button type="primary" className="bg-purple-600 hover:bg-purple-700 text-white px-8" onClick={()=>route.push("/signin")}>
-              {/* <FileText className="mr-2 h-5 w-5" /> */}
-              Sign in
-            </Button>
-            <Button type="primary" className="text-white border-purple-500 hover:bg-purple-500/20" onClick={()=>route.push("/signup")}>
-              {/* <Sparkles className="mr-2 h-5 w-5" /> */}
-              Sign up
-            </Button>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Animated robot */}
-      <div className="absolute bottom-0 right-0 w-96 h-96">
-        <RoboAnimation />
+      <div className="signin-box text-white border-purple-500 ">
+        <h1 className="  text-black text-3xl font-bold m-auto">Sign In</h1>
+        <form className="signin-form">
+          <input type="email" placeholder="Email" className="signin-input" />
+          <input
+            type="password"
+            placeholder="Password"
+            className="signin-input"
+          />
+          <button className="signin-btn">Login</button>
+          <h1>Don't have an account?</h1>
+          <h4 className="s">Sign Up</h4>
+        </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
+export default Page;
+
+// export default function Page() {
+//    (
+
+// <div className="signin-container">
+//       <div className="logo-container">
+//         {/* <Image
+//           src="/logo.png"
+//           alt="Logo"
+//           width={120}
+//           height={40}
+//           className="signin-logo"
+//         /> */}
+//       </div>
+//       <div className="signin-box text-white border-purple-500 ">
+//         <h1 className="  text-black text-3xl font-bold m-auto">Sign In</h1>
+//         <form className="signin-form">
+//           <input type="email" placeholder="Email" className="signin-input" />
+//           <input
+//             type="password"
+//             placeholder="Password"
+//             className="signin-input"
+//           />
+//           <button className="signin-btn">Login</button>
+//           <h1>Don't have an account?</h1>
+//           <h4 className="s">Sign Up</h4>
+//         </form>
+//       </div>
+//     </div>
+//   )
+// }
