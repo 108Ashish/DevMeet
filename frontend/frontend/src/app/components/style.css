@@ -65,8 +65,6 @@ body {
   }
 }
 
-
-
 @keyframes popUp {
   from {
     opacity: 0;
@@ -118,7 +116,6 @@ body {
   }
 }
 
-/*Sign In page*/
 .logo-container {
   position: absolute;
   top: 20px;
