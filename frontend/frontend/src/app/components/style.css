@@ -64,38 +64,9 @@ body {
     opacity: 1;
   }
 }
-.signupp-btn {
-  background-color: rgb(74, 140, 239);
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 10px 24px;
-  border: 0cm;
-  border-radius: 15px;
-  cursor: pointer;
-  margin-top: 20px;
-  opacity: 0;
-  transform: scale(0.5);
-  animation: popUp 0.5s ease-out 1.5s forwards;
-}
-.signinn-btn {
-  background-color: rgb(74, 140, 239);
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 10px 24px;
-  border: 0cm;
-  border-radius: 15px;
-  cursor: pointer;
-  margin-top: 20px;
-  opacity: 0;
-  transform: scale(0.5);
-  animation: popUp 0.5s ease-out 1.5s forwards;
-}
 
-.signupp-btn:hover {
-  background-color: rgb(74, 140, 239);
-}
+
+
 @keyframes popUp {
   from {
     opacity: 0;
@@ -169,7 +140,7 @@ body {
 }
 
 .signin-box {
-  background: rgba(185, 144, 209, 0.57);
+  background: #2d7494;
   backdrop-filter: blur(15px);
   padding: 2rem;
   border-radius: 12px;
@@ -190,7 +161,7 @@ body {
   font-size: 1rem;
   font-weight: 500;
   text-align: left;
-  color: #fff;
+  color: #050505;
 }
 .signin-input {
   padding: 12px;
