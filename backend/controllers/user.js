@@ -38,6 +38,21 @@ const commentOnPost = async (req, res) => {
     }
 }
 
+const getAllUserIds = async (req, res) => {
+    try {
+        const users = await pclient.user.findMany({
+            select: {
+                id: true
+            }
+        });
+
+        res.status(200).json({ userIds: users.map(user => user.id) });
+    } catch (error) {
+        console.error('Error in getAllUserIds:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 const likeUnlikePost = async(req, res)=> {
     try {
         const { postId, userId } = req.body;
@@ -173,7 +188,6 @@ const followUnfollowUser = async (req, res) => {
 const getOtherProfile = async (req, res) => {
     try {
         const { userId } = req.body;
-
         const profileData = await pclient.user.findUnique({
             where: { id: userId },
             select: {
@@ -249,5 +263,5 @@ const getOtherProfile = async (req, res) => {
 //     }
 // };
 
-module.exports = { commentOnPost, likeUnlikePost, createPost,  followUnfollowUser,  getOtherProfile}
+module.exports = { commentOnPost, likeUnlikePost, createPost,  followUnfollowUser,  getOtherProfile, getAllUserIds}
 
